@@ -15,8 +15,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 // Other includes
-#include "Shader.h"
-
+#include "shader.h"
 
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
