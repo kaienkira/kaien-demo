@@ -1,20 +1,79 @@
 #include <stdint.h>
 #include <csignal>
 #include <cstdio>
+#include <brickred/class_util.h>
 #include <brickred/io_service.h>
 #include <brickred/unix/system.h>
 
 #include "physx_system.h"
+#include "test_scene.h"
 
-brickred::IOService g_io_service;
+class App {
+public:
+    bool init();
+    void finalize();
 
-static void signalHandler(int signum)
+    void loop();
+    void quit();
+
+private:
+    void update(int64_t timer_id);
+
+private:
+    BRICKRED_SINGLETON(App)
+
+    brickred::IOService io_service_;
+    TestScene test_scene_;
+    int64_t timer_id_;
+};
+
+App::App() : timer_id_(-1)
 {
-    g_io_service.quit();
 }
 
-void update(int64_t timer_id)
+App::~App()
 {
+    finalize();
+}
+
+bool App::init()
+{
+    if (test_scene_.init() == false) {
+        return false;
+    }
+
+    timer_id_ = io_service_.startTimer(16,
+        BRICKRED_BIND_MEM_FUNC(&App::update, this));
+
+    return true;
+}
+
+void App::finalize()
+{
+    if (timer_id_ != -1) {
+        io_service_.stopTimer(timer_id_);
+    }
+}
+
+void App::loop()
+{
+    io_service_.loop();
+}
+
+void App::quit()
+{
+    io_service_.quit();
+}
+
+void App::update(int64_t timer_id)
+{
+    test_scene_.update();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+static void signalHandler(int signum)
+{
+    App::getInstance()->quit();
 }
 
 int main(int argc, char *argv[])
@@ -25,12 +84,18 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    PhysxSystem *physx_system = PhysxSystem::getInstance();
-    if (physx_system->init() == false) {
+    PhysxSystem::getInstance();
+    App::getInstance();
+
+    if (sPhysxSystem->init() == false) {
         return 1;
     }
 
-    if (physx_system->connectToVisualDebugger(argv[1]) == false) {
+    if (App::getInstance()->init() == false) {
+        return 1;
+    }
+
+    if (sPhysxSystem->connectToVisualDebugger(argv[1]) == false) {
         ::fprintf(stderr, "visual debugger is not avaliable\n");
         return 1;
     }
@@ -38,12 +103,7 @@ int main(int argc, char *argv[])
     brickred::os::signal(SIGTERM, signalHandler);
     brickred::os::signal(SIGINT, signalHandler);
 
-    int64_t timer_id = g_io_service.startTimer(1000,
-        BRICKRED_BIND_FREE_FUNC(&update));
-    g_io_service.loop();
-    g_io_service.stopTimer(timer_id);
-
-    physx_system->finalize();
+    App::getInstance()->loop();
 
     return 0;
 }

@@ -6,6 +6,7 @@ TARGET = physx-test
 SRC = \
 main.cc \
 physx_system.cc \
+test_scene.cc \
 
 INCLUDES = \
 -I$(PHYSX_HOME)/include \

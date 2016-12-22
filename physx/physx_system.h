@@ -24,6 +24,8 @@ public:
     bool connectToVisualDebugger(
         const std::string &host, uint16_t port = 5425, int timeout_ms = 5000);
 
+    physx::PxPhysics *getPhysics() { return physics_; }
+
 private:
     BRICKRED_SINGLETON(PhysxSystem)
 
@@ -36,3 +38,5 @@ private:
 };
 
 #endif
+
+#define sPhysxSystem PhysxSystem::getInstance()
