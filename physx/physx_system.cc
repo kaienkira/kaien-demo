@@ -10,13 +10,7 @@
 #include <physx/physxprofilesdk/PxProfileZoneManager.h>
 #include <physx/pvd/PxVisualDebugger.h>
 
-using physx::PxProfileZoneManager;
-using physx::PxTolerancesScale;
-using physx::PxVisualDebugger;
-using physx::PxVisualDebuggerConnectionFlag;
-using physx::PxVisualDebuggerExt;
-using physx::PxVisualDebuggerFlag;
-using physx::PxVisualDebuggerConnectionFlags;
+using namespace physx;
 
 PhysxSystem::PhysxSystem() :
     foundation_(NULL),

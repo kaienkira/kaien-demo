@@ -2,6 +2,7 @@
 
 #include <physx/PxMaterial.h>
 #include <physx/PxPhysics.h>
+#include <physx/PxRigidDynamic.h>
 #include <physx/PxRigidStatic.h>
 #include <physx/PxScene.h>
 #include <physx/PxSceneDesc.h>
@@ -9,17 +10,11 @@
 #include <physx/extensions/PxDefaultSimulationFilterShader.h>
 #include <physx/extensions/PxSimpleFactory.h>
 #include <physx/foundation/PxPlane.h>
+#include <physx/foundation/PxVec3.h>
 
 #include "physx_system.h"
 
-using physx::PxDefaultCpuDispatcher;
-using physx::PxDefaultSimulationFilterShader;
-using physx::PxMaterial;
-using physx::PxPhysics;
-using physx::PxPlane;
-using physx::PxRigidStatic;
-using physx::PxScene;
-using physx::PxSceneDesc;
+using namespace physx;
 
 TestScene::TestScene() :
     cpu_dispatcher_(NULL),
@@ -37,12 +32,13 @@ bool TestScene::init()
 {
     PxPhysics *physics = sPhysxSystem->getPhysics();
 
-    material_ = physics->createMaterial(0.5f, 0.5f, 0.6f);
+    material_ = physics->createMaterial(0.5f, 0.5f, 1.0f);
     if (NULL == material_) {
         return false;
     }
 
     PxSceneDesc scene_desc(physics->getTolerancesScale());
+    scene_desc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
     scene_desc.cpuDispatcher
         = cpu_dispatcher_
         = physx::PxDefaultCpuDispatcherCreate(2);
@@ -52,12 +48,20 @@ bool TestScene::init()
         return false;
     }
 
-    PxRigidStatic* ground_plane = physx::PxCreatePlane(*physics,
+    PxRigidStatic* ground_plane = PxCreatePlane(*physics,
         PxPlane(0, 1, 0, 0), *material_);
     if (NULL == ground_plane) {
         return false;
     }
     physx_scene_->addActor(*ground_plane);
+
+    for (int i = 0; i < 100; ++i) {
+        PxRigidDynamic *sphere = PxCreateDynamic(*physics,
+            PxTransform(PxVec3(3.0f * i, 20.0f, 0.0f)),
+            PxSphereGeometry(1.0f), *material_, 10.0f);
+        sphere->setAngularDamping(0.0f);
+        physx_scene_->addActor(*sphere);
+    }
 
     return true;
 }

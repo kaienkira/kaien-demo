@@ -25,8 +25,24 @@ DEBUG_LIBS = \
 -lbrickredunix \
 -lpthread \
 
+RELEASE_FLAGS = -O2 -DNDEBUG
+RELEASE_LIBS = \
+-L$(PHYSX_HOME)/lib \
+-lPhysX3Extensions \
+-lPvdRuntime \
+-lPhysXVisualDebuggerSDK \
+-lPhysXProfileSDK \
+-lPhysX3Common_x64 \
+-lPhysX3_x64 \
+-lbrickredcore \
+-lbrickredunix \
+-lpthread \
+
 debug:
 	g++ $(DEBUG_FLAGS) $(SRC) $(INCLUDES) $(DEBUG_LIBS) -o $(TARGET)
+
+release:
+	g++ $(RELEASE_LIBS) $(SRC) $(INCLUDES) $(RELEASE_LIBS) -o $(TARGET)
 
 run:
 	LD_LIBRARY_PATH=$(PHYSX_HOME)/lib ./$(TARGET) $(PVD_HOST)
