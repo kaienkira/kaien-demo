@@ -6,6 +6,8 @@ TARGET = physx-test
 SRC = \
 main.cc \
 physx_system.cc \
+scene_manager.cc \
+server_app.cc \
 test_scene.cc \
 
 INCLUDES = \
@@ -42,13 +44,13 @@ debug:
 	g++ $(DEBUG_FLAGS) $(SRC) $(INCLUDES) $(DEBUG_LIBS) -o $(TARGET)
 
 release:
-	g++ $(RELEASE_LIBS) $(SRC) $(INCLUDES) $(RELEASE_LIBS) -o $(TARGET)
+	g++ $(RELEASE_FLAGS) $(SRC) $(INCLUDES) $(RELEASE_LIBS) -o $(TARGET)
 
 run:
 	LD_LIBRARY_PATH=$(PHYSX_HOME)/lib ./$(TARGET) $(PVD_HOST)
 
 mem_check:
-	LD_LIBRARY_PATH=$(PHYSX_HOME)/lib: valgrind --leak-check=full --show-leak-kinds=all ./$(TARGET)
+	LD_LIBRARY_PATH=$(PHYSX_HOME)/lib: valgrind --leak-check=full --show-leak-kinds=all ./$(TARGET) $(PVD_HOST)
 
 clean:
 	rm -f $(TARGET)

@@ -4,12 +4,14 @@
 #include <stdint.h>
 #include <string>
 #include <brickred/class_util.h>
+#include <physx/extensions/PxDefaultCpuDispatcher.h>
 #include <physx/extensions/PxDefaultErrorCallback.h>
 #include <physx/extensions/PxDefaultAllocator.h>
 #include <physx/physxvisualdebuggersdk/PvdConnection.h>
 
 namespace physx {
 
+class PxCpuDispatcher;
 class PxFoundation;
 class PxPhysics;
 class PxProfileZoneManager;
@@ -25,6 +27,7 @@ public:
         const std::string &host, uint16_t port = 5425, int timeout_ms = 5000);
 
     physx::PxPhysics *getPhysics() { return physics_; }
+    physx::PxCpuDispatcher *getCpuDispatcher() { return cpu_dispatcher_; }
 
 private:
     BRICKRED_SINGLETON(PhysxSystem)
@@ -34,6 +37,7 @@ private:
     physx::PxFoundation *foundation_;
     physx::PxProfileZoneManager *profile_zone_manager_;
     physx::PxPhysics *physics_;
+    physx::PxDefaultCpuDispatcher *cpu_dispatcher_;
     physx::PxVisualDebuggerConnection *visual_debugger_conn_;
 };
 

@@ -16,6 +16,7 @@ PhysxSystem::PhysxSystem() :
     foundation_(NULL),
     profile_zone_manager_(NULL),
     physics_(NULL),
+    cpu_dispatcher_(NULL),
     visual_debugger_conn_(NULL)
 {
 }
@@ -43,6 +44,11 @@ bool PhysxSystem::init()
         return false;
     }
 
+    cpu_dispatcher_ = physx::PxDefaultCpuDispatcherCreate(4);
+    if (NULL == cpu_dispatcher_) {
+        return false;
+    }
+
     return true;
 }
 
@@ -51,6 +57,11 @@ void PhysxSystem::finalize()
     if (visual_debugger_conn_ != NULL) {
         visual_debugger_conn_->release();
         visual_debugger_conn_ = NULL;
+    }
+
+    if (cpu_dispatcher_ != NULL) {
+        cpu_dispatcher_->release();
+        cpu_dispatcher_ = NULL;
     }
 
     if (physics_ != NULL) {

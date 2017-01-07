@@ -1,11 +1,11 @@
 #ifndef TEST_TEST_SCENE_H
 #define TEST_TEST_SCENE_H
 
+#include <stdint.h>
 #include <brickred/class_util.h>
 
 namespace physx {
 
-class PxDefaultCpuDispatcher;
 class PxMaterial;
 class PxScene;
 
@@ -18,14 +18,17 @@ public:
 
     bool init();
     void finalize();
-    void update();
+
+private:
+    void update(int64_t timer_id);
 
 private:
     BRICKRED_NONCOPYABLE(TestScene)
 
     physx::PxMaterial *material_;
-    physx::PxDefaultCpuDispatcher *cpu_dispatcher_;
     physx::PxScene *physx_scene_;
+
+    int64_t timer_id_;
 };
 
 #endif
