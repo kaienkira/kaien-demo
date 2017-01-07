@@ -1,5 +1,6 @@
 #include "test_scene.h"
 
+#include <cstdio>
 #include <physx/PxMaterial.h>
 #include <physx/PxPhysics.h>
 #include <physx/PxRigidDynamic.h>
@@ -19,7 +20,8 @@ using namespace physx;
 TestScene::TestScene() :
     physx_scene_(NULL),
     material_(NULL),
-    timer_id_(-1)
+    timer_id_(-1),
+    frame_count_(0)
 {
 }
 
@@ -88,5 +90,7 @@ void TestScene::update(int64_t timer_id)
     if (physx_scene_ != NULL) {
         physx_scene_->simulate(1.0f / 60.0f);
         physx_scene_->fetchResults(true);
+
+        ::printf("frame_count: %ld\n", ++frame_count_);
     }
 }

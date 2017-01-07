@@ -29,6 +29,7 @@ private:
     physx::PxScene *physx_scene_;
 
     int64_t timer_id_;
+    int64_t frame_count_;
 };
 
 #endif
