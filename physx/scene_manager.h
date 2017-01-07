@@ -1,9 +1,10 @@
 #ifndef TEST_SCENE_MANAGER_H
 #define TEST_SCENE_MANAGER_H
 
+#include <vector>
 #include <brickred/class_util.h>
 
-#include "test_scene.h"
+class TestScene;
 
 class SceneManager {
 public:
@@ -13,7 +14,7 @@ public:
 private:
     BRICKRED_SINGLETON(SceneManager)
 
-    TestScene test_scene_;
+    std::vector<TestScene *> scenes_;
 };
 
 #define sSceneManager SceneManager::getInstance()
