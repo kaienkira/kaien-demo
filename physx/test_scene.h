@@ -20,6 +20,10 @@ public:
     void finalize();
 
 private:
+    bool initScene1();
+    bool initScene2();
+
+private:
     void update(int64_t timer_id);
 
 private:

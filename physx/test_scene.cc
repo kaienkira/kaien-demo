@@ -13,6 +13,7 @@
 #include <physx/foundation/PxVec3.h>
 
 #include "physx_system.h"
+#include "physx_ptr.h"
 #include "server_app.h"
 
 using namespace physx;
@@ -51,24 +52,45 @@ bool TestScene::init(int64_t scene_id)
         return false;
     }
 
-    PxRigidStatic* ground_plane = PxCreatePlane(*physics,
-        PxPlane(0, 1, 0, 0), *material_);
-    if (NULL == ground_plane) {
+    if (initScene1() == false) {
         return false;
-    }
-    physx_scene_->addActor(*ground_plane);
-
-    for (int i = 0; i < 20; ++i) {
-        PxRigidDynamic *sphere = PxCreateDynamic(*physics,
-            PxTransform(PxVec3(3.0f * i, 20.0f, 0.0f)),
-            PxSphereGeometry(1.0f), *material_, 10.0f);
-        sphere->setAngularDamping(0.0f);
-        physx_scene_->addActor(*sphere);
     }
 
     timer_id_ = sServerApp->startTimer(16,
         BRICKRED_BIND_MEM_FUNC(&TestScene::update, this));
 
+    return true;
+}
+
+bool TestScene::initScene1()
+{
+    PxPhysics *physics = sPhysxSystem->getPhysics();
+
+    PhysxPtr<PxRigidStatic> ground_plane(PxCreatePlane(*physics,
+        PxPlane(0, 1, 0, 0), *material_));
+    if (ground_plane.get() == NULL) {
+        return false;
+    }
+    physx_scene_->addActor(*ground_plane.get());
+    ground_plane.release();
+
+    for (int i = 0; i < 20; ++i) {
+        PhysxPtr<PxRigidDynamic> sphere(PxCreateDynamic(*physics,
+            PxTransform(PxVec3(3.0f * i, 20.0f, 0.0f)),
+            PxSphereGeometry(1.0f), *material_, 10.0f));
+        if (sphere.get() == NULL) {
+            return false;
+        }
+        sphere->setAngularDamping(0.0f);
+        physx_scene_->addActor(*sphere.get());
+        sphere.release();
+    }
+
+    return true;
+}
+
+bool TestScene::initScene2()
+{
     return true;
 }
 
