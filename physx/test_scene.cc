@@ -20,6 +20,7 @@ using namespace physx;
 TestScene::TestScene() :
     physx_scene_(NULL),
     material_(NULL),
+    scene_id_(0),
     timer_id_(-1),
     frame_count_(0)
 {
@@ -30,8 +31,10 @@ TestScene::~TestScene()
     finalize();
 }
 
-bool TestScene::init()
+bool TestScene::init(int64_t scene_id)
 {
+    scene_id_ = scene_id;
+
     PxPhysics *physics = sPhysxSystem->getPhysics();
 
     material_ = physics->createMaterial(0.5f, 0.5f, 1.0f);
@@ -88,9 +91,11 @@ void TestScene::finalize()
 void TestScene::update(int64_t timer_id)
 {
     if (physx_scene_ != NULL) {
+        ++frame_count_;
         physx_scene_->simulate(1.0f / 60.0f);
         physx_scene_->fetchResults(true);
 
-        ::printf("frame_count: %ld\n", ++frame_count_);
+        ::printf("scene %ld frame_count: %ld\n",
+                 scene_id_, frame_count_);
     }
 }

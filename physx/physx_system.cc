@@ -46,7 +46,7 @@ bool PhysxSystem::init()
         return false;
     }
 
-    cpu_dispatcher_ = physx::PxDefaultCpuDispatcherCreate(4);
+    cpu_dispatcher_ = physx::PxDefaultCpuDispatcherCreate(0);
     if (NULL == cpu_dispatcher_) {
         return false;
     }

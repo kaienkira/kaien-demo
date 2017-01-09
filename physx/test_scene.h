@@ -16,7 +16,7 @@ public:
     TestScene();
     ~TestScene();
 
-    bool init();
+    bool init(int64_t scene_id);
     void finalize();
 
 private:
@@ -28,6 +28,7 @@ private:
     physx::PxMaterial *material_;
     physx::PxScene *physx_scene_;
 
+    int64_t scene_id_;
     int64_t timer_id_;
     int64_t frame_count_;
 };
