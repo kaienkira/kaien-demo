@@ -12,7 +12,7 @@ static void signalHandler(int signum)
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2) {
+    if (argc < 3) {
         ::fprintf(stderr, "usage: %s <visual_debugger_host>\n",
                 argv[0]);
         return 1;
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
     ServerApp::getInstance();
 
-    if (sServerApp->init() == false) {
+    if (sServerApp->init(::atoi(argv[2])) == false) {
         return 1;
     }
 

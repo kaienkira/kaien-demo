@@ -34,8 +34,10 @@ bool PhysxSystem::init()
         return false;
     }
 
+#ifndef NDEBUG
     profile_zone_manager_ =
         &PxProfileZoneManager::createProfileZoneManager(foundation_);
+#endif
 
     physics_ = PxCreateBasePhysics(
         PX_PHYSICS_VERSION, *foundation_,

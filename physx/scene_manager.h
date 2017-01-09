@@ -1,6 +1,7 @@
 #ifndef TEST_SCENE_MANAGER_H
 #define TEST_SCENE_MANAGER_H
 
+#include <cstddef>
 #include <vector>
 #include <brickred/class_util.h>
 
@@ -8,7 +9,7 @@ class TestScene;
 
 class SceneManager {
 public:
-    bool init();
+    bool init(size_t scene_count);
     void finalize();
 
 private:

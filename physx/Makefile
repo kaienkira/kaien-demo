@@ -1,5 +1,6 @@
 PHYSX_HOME=/home/kaien/local/physx
 PVD_HOST=192.168.0.156
+SCENE_COUNT=50
 
 TARGET = physx-test
 
@@ -47,10 +48,10 @@ release:
 	g++ $(RELEASE_FLAGS) $(SRC) $(INCLUDES) $(RELEASE_LIBS) -o $(TARGET)
 
 run:
-	LD_LIBRARY_PATH=$(PHYSX_HOME)/lib ./$(TARGET) $(PVD_HOST)
+	LD_LIBRARY_PATH=$(PHYSX_HOME)/lib ./$(TARGET) $(PVD_HOST) $(SCENE_COUNT)
 
 mem_check:
-	LD_LIBRARY_PATH=$(PHYSX_HOME)/lib: valgrind --leak-check=full --show-leak-kinds=all ./$(TARGET) $(PVD_HOST)
+	LD_LIBRARY_PATH=$(PHYSX_HOME)/lib: valgrind --leak-check=full --show-leak-kinds=all ./$(TARGET) $(PVD_HOST) $(SCENE_COUNT)
 
 clean:
 	rm -f $(TARGET)

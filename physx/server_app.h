@@ -2,6 +2,7 @@
 #define TEST_PHYSX_SERVER_APP_H
 
 #include <stdint.h>
+#include <cstddef>
 #include <brickred/class_util.h>
 #include <brickred/function.h>
 #include <brickred/io_service.h>
@@ -10,7 +11,7 @@ class ServerApp {
 public:
     typedef brickred::Function<void (int64_t)> TimerCallback;
 
-    bool init();
+    bool init(size_t scene_count);
     void finalize();
 
     void loop();

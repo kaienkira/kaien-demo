@@ -14,7 +14,7 @@ ServerApp::~ServerApp()
     finalize();
 }
 
-bool ServerApp::init()
+bool ServerApp::init(size_t scene_count)
 {
     PhysxSystem::getInstance();
     SceneManager::getInstance();
@@ -23,7 +23,7 @@ bool ServerApp::init()
         return false;
     }
 
-    if (sSceneManager->init() == false) {
+    if (sSceneManager->init(scene_count) == false) {
         return false;
     }
 

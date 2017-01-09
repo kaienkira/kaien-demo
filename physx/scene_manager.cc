@@ -15,9 +15,9 @@ SceneManager::~SceneManager()
     finalize();
 }
 
-bool SceneManager::init()
+bool SceneManager::init(size_t scene_count)
 {
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < scene_count; ++i) {
         UniquePtr<TestScene> test_scene(new TestScene());
         if (test_scene->init() == false) {
             return false;
