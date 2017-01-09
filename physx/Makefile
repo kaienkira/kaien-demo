@@ -1,6 +1,6 @@
 PHYSX_HOME=/home/kaien/local/physx
 PVD_HOST=192.168.0.156
-SCENE_COUNT=150
+SCENE_COUNT=1
 
 TARGET = physx-test
 
