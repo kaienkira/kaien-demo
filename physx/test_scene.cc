@@ -7,6 +7,7 @@
 #include <physx/PxRigidStatic.h>
 #include <physx/PxScene.h>
 #include <physx/PxSceneDesc.h>
+#include <physx/characterkinematic/PxControllerManager.h>
 #include <physx/extensions/PxDefaultSimulationFilterShader.h>
 #include <physx/extensions/PxSimpleFactory.h>
 #include <physx/foundation/PxPlane.h>
@@ -21,8 +22,9 @@
 using namespace physx;
 
 TestScene::TestScene() :
-    physx_scene_(NULL),
     material_(NULL),
+    physx_scene_(NULL),
+    controller_manager_(NULL),
     scene_id_(0),
     timer_id_(-1),
     frame_count_(0)
@@ -54,6 +56,11 @@ bool TestScene::init(int64_t scene_id)
         return false;
     }
 
+    controller_manager_ = PxCreateControllerManager(*physx_scene_);
+    if (NULL == controller_manager_) {
+        return false;
+    }
+
     if (initScene2() == false) {
         return false;
     }
@@ -62,6 +69,38 @@ bool TestScene::init(int64_t scene_id)
         BRICKRED_BIND_MEM_FUNC(&TestScene::update, this));
 
     return true;
+}
+
+void TestScene::finalize()
+{
+    if (controller_manager_ != NULL) {
+        controller_manager_->release();
+        controller_manager_ = NULL;
+    }
+    if (physx_scene_ != NULL) {
+        physx_scene_->release();
+        physx_scene_ = NULL;
+    }
+    if (material_ != NULL) {
+        material_->release();
+        material_ = NULL;
+    }
+    if (timer_id_ != -1) {
+        sServerApp->stopTimer(timer_id_);
+        timer_id_ = -1;
+    }
+}
+
+void TestScene::update(int64_t timer_id)
+{
+    if (physx_scene_ != NULL) {
+        ++frame_count_;
+        physx_scene_->simulate(1.0f / 60.0f);
+        physx_scene_->fetchResults(true);
+
+        ::printf("scene %ld frame_count: %ld\n",
+                 scene_id_, frame_count_);
+    }
 }
 
 bool TestScene::initScene1()
@@ -157,30 +196,3 @@ bool TestScene::initScene2()
     return true;
 }
 
-void TestScene::finalize()
-{
-    if (physx_scene_ != NULL) {
-        physx_scene_->release();
-        physx_scene_ = NULL;
-    }
-    if (material_ != NULL) {
-        material_->release();
-        material_ = NULL;
-    }
-    if (timer_id_ != -1) {
-        sServerApp->stopTimer(timer_id_);
-        timer_id_ = -1;
-    }
-}
-
-void TestScene::update(int64_t timer_id)
-{
-    if (physx_scene_ != NULL) {
-        ++frame_count_;
-        physx_scene_->simulate(1.0f / 60.0f);
-        physx_scene_->fetchResults(true);
-
-        ::printf("scene %ld frame_count: %ld\n",
-                 scene_id_, frame_count_);
-    }
-}

@@ -8,6 +8,7 @@ namespace physx {
 
 class PxMaterial;
 class PxScene;
+class PxControllerManager;
 
 } // namespace physx
 
@@ -31,6 +32,7 @@ private:
 
     physx::PxMaterial *material_;
     physx::PxScene *physx_scene_;
+    physx::PxControllerManager *controller_manager_;
 
     int64_t scene_id_;
     int64_t timer_id_;

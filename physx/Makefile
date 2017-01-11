@@ -20,6 +20,7 @@ DEBUG_LIBS = \
 -L$(PHYSX_HOME)/lib \
 -lPhysX3ExtensionsDEBUG \
 -lPvdRuntimeDEBUG \
+-lPhysX3CharacterKinematicDEBUG_x64 \
 -lPhysXVisualDebuggerSDKDEBUG \
 -lPhysXProfileSDKDEBUG \
 -lPhysX3CommonDEBUG_x64 \
@@ -33,6 +34,7 @@ RELEASE_LIBS = \
 -L$(PHYSX_HOME)/lib \
 -lPhysX3Extensions \
 -lPvdRuntime \
+-lPhysX3CharacterKinematic_x64 \
 -lPhysXVisualDebuggerSDK \
 -lPhysXProfileSDK \
 -lPhysX3Common_x64 \
