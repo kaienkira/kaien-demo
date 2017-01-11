@@ -11,6 +11,8 @@
 #include <physx/extensions/PxSimpleFactory.h>
 #include <physx/foundation/PxPlane.h>
 #include <physx/foundation/PxVec3.h>
+#include <physx/geometry/PxBoxGeometry.h>
+#include <physx/geometry/PxSphereGeometry.h>
 
 #include "physx_system.h"
 #include "physx_ptr.h"
@@ -52,7 +54,7 @@ bool TestScene::init(int64_t scene_id)
         return false;
     }
 
-    if (initScene1() == false) {
+    if (initScene2() == false) {
         return false;
     }
 
@@ -91,6 +93,67 @@ bool TestScene::initScene1()
 
 bool TestScene::initScene2()
 {
+    PxPhysics *physics = sPhysxSystem->getPhysics();
+
+    PhysxPtr<PxRigidStatic> ground_plane(PxCreatePlane(*physics,
+        PxPlane(0, 1, 0, 0), *material_));
+    if (ground_plane.get() == NULL) {
+        return false;
+    }
+    physx_scene_->addActor(*ground_plane.get());
+    ground_plane.release();
+
+    PhysxPtr<PxRigidStatic> env(physics->createRigidStatic(
+        PxTransform(PxVec3(0.0f, 0.0f, 0.0f))));
+    if (env.get() == NULL) {
+        return false;
+    }
+
+    {
+        PxShape *s = env->createShape(
+            PxBoxGeometry(20.0f, 1.0f, 1.0f), *material_);
+        if (NULL == s) {
+            return false;
+        }
+        s->setLocalPose(PxTransform(PxVec3(0.0f, 1.0f, 20.0f)));
+    }
+    {
+        PxShape *s = env->createShape(
+            PxBoxGeometry(20.0f, 1.0f, 1.0f), *material_);
+        if (NULL == s) {
+            return false;
+        }
+        s->setLocalPose(PxTransform(PxVec3(0.0f, 1.0f, -20.0f)));
+    }
+    {
+        PxShape *s = env->createShape(
+            PxBoxGeometry(1.0f, 1.0f, 20.0f), *material_);
+        if (NULL == s) {
+            return false;
+        }
+        s->setLocalPose(PxTransform(PxVec3(20.0f, 1.0f, 0.0f)));
+    }
+    {
+        PxShape *s = env->createShape(
+            PxBoxGeometry(1.0f, 1.0f, 20.0f), *material_);
+        if (NULL == s) {
+            return false;
+        }
+        s->setLocalPose(PxTransform(PxVec3(-20.0f, 1.0f, 0.0f)));
+    }
+    {
+        PxShape *s = env->createShape(
+            PxBoxGeometry(5.0f, 0.5f, 20.0f), *material_);
+        if (NULL == s) {
+            return false;
+        }
+        s->setLocalPose(PxTransform(PxQuat(0.5, PxVec3(1.0f, 0.0f, 0.0f))));
+    }
+
+    physx_scene_->addActor(*env.get());
+    env.release();
+
+
     return true;
 }
 
