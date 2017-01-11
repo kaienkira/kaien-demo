@@ -7,6 +7,7 @@
 #include <physx/PxRigidStatic.h>
 #include <physx/PxScene.h>
 #include <physx/PxSceneDesc.h>
+#include <physx/characterkinematic/PxCapsuleController.h>
 #include <physx/characterkinematic/PxControllerManager.h>
 #include <physx/extensions/PxDefaultSimulationFilterShader.h>
 #include <physx/extensions/PxSimpleFactory.h>
@@ -60,6 +61,7 @@ bool TestScene::init(int64_t scene_id)
     if (NULL == controller_manager_) {
         return false;
     }
+    // controller_manager_->setOverlapRecoveryModule(true);
 
     if (initScene2() == false) {
         return false;
@@ -192,7 +194,30 @@ bool TestScene::initScene2()
     physx_scene_->addActor(*env.get());
     env.release();
 
+    {
+        PxCapsuleControllerDesc desc;
+        desc.radius = 1.0f;
+        desc.height = 1.0f;
+        desc.material = material_;
+        desc.position = PxExtendedVec3(0.0f, 10.0f, 0.0f);
+        PxController *controller =
+            controller_manager_->createController(desc);
+        if (NULL == controller) {
+            return false;
+        }
+    }
+
+    {
+        PhysxPtr<PxRigidDynamic> sphere(PxCreateDynamic(*physics,
+            PxTransform(PxVec3(0.0f, 20.0f, 0.0f)),
+            PxSphereGeometry(1.0f), *material_, 10.0f));
+        if (sphere.get() == NULL) {
+            return false;
+        }
+        sphere->setAngularDamping(0.0f);
+        physx_scene_->addActor(*sphere.get());
+        sphere.release();
+    }
 
     return true;
 }
-
