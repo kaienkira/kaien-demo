@@ -212,6 +212,7 @@ bool TestScene::initScene2()
         desc.material = material_;
         desc.position = PxExtendedVec3(0.0f, 0.0f, 0.0f);
         desc.slopeLimit = 0.0f;
+        desc.contactOffset = 0.1f;
         PxController *controller =
             controller_manager_->createController(desc);
         if (NULL == controller) {
