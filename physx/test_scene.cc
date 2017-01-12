@@ -97,8 +97,18 @@ void TestScene::update(int64_t timer_id)
 {
     if (physx_scene_ != NULL) {
         ++frame_count_;
+
+        {
+            PxController *controller = controller_manager_->getController(0);
+            if (controller != NULL) {
+                controller->move(PxVec3(0.0f, -0.1f, -0.1f),
+                    0.0f, 16.0f, PxControllerFilters());
+            }
+        }
+
         physx_scene_->simulate(1.0f / 60.0f);
         physx_scene_->fetchResults(true);
+
 
         ::printf("scene %ld frame_count: %ld\n",
                  scene_id_, frame_count_);
@@ -199,7 +209,8 @@ bool TestScene::initScene2()
         desc.radius = 1.0f;
         desc.height = 1.0f;
         desc.material = material_;
-        desc.position = PxExtendedVec3(0.0f, 10.0f, 0.0f);
+        desc.position = PxExtendedVec3(0.0f, 0.0f, 0.0f);
+        desc.slopeLimit = 0.0f;
         PxController *controller =
             controller_manager_->createController(desc);
         if (NULL == controller) {
@@ -209,7 +220,7 @@ bool TestScene::initScene2()
 
     {
         PhysxPtr<PxRigidDynamic> sphere(PxCreateDynamic(*physics,
-            PxTransform(PxVec3(0.0f, 20.0f, 0.0f)),
+            PxTransform(PxVec3(0.0f, 10.0f, 0.0f)),
             PxSphereGeometry(1.0f), *material_, 10.0f));
         if (sphere.get() == NULL) {
             return false;
