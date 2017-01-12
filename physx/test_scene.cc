@@ -61,7 +61,8 @@ bool TestScene::init(int64_t scene_id)
     if (NULL == controller_manager_) {
         return false;
     }
-    // controller_manager_->setOverlapRecoveryModule(true);
+    // controller_manager_->setOverlapRecoveryModule(false);
+    // controller_manager_->setPreciseSweeps(false);
 
     if (initScene2() == false) {
         return false;
