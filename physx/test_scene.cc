@@ -49,7 +49,7 @@ bool TestScene::init(int64_t scene_id)
     }
 
     PxSceneDesc scene_desc(physics->getTolerancesScale());
-    scene_desc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
+    scene_desc.gravity = PxVec3(0.0f, 0.0f, -980.0f);
     scene_desc.cpuDispatcher = sPhysxSystem->getCpuDispatcher();
     scene_desc.filterShader = PxDefaultSimulationFilterShader;
     physx_scene_ = physics->createScene(scene_desc);
@@ -102,7 +102,7 @@ void TestScene::update(int64_t timer_id)
         {
             PxController *controller = controller_manager_->getController(0);
             if (controller != NULL) {
-                controller->move(PxVec3(0.0f, -0.1f, -0.1f),
+                controller->move(PxVec3(0.0f, 10.0f, -10.0f),
                     0.0f, 16.0f, PxControllerFilters());
             }
         }
@@ -121,7 +121,7 @@ bool TestScene::initScene1()
     PxPhysics *physics = sPhysxSystem->getPhysics();
 
     PhysxPtr<PxRigidStatic> ground_plane(PxCreatePlane(*physics,
-        PxPlane(0, 1, 0, 0), *material_));
+        PxPlane(0, 0, 1, 0), *material_));
     if (ground_plane.get() == NULL) {
         return false;
     }
@@ -130,8 +130,8 @@ bool TestScene::initScene1()
 
     for (int i = 0; i < 20; ++i) {
         PhysxPtr<PxRigidDynamic> sphere(PxCreateDynamic(*physics,
-            PxTransform(PxVec3(3.0f * i, 20.0f, 0.0f)),
-            PxSphereGeometry(1.0f), *material_, 10.0f));
+            PxTransform(PxVec3(300.0f * i, 0.0f, 2000.0f)),
+            PxSphereGeometry(100.0f), *material_, 1000.0f));
         if (sphere.get() == NULL) {
             return false;
         }
@@ -148,7 +148,7 @@ bool TestScene::initScene2()
     PxPhysics *physics = sPhysxSystem->getPhysics();
 
     PhysxPtr<PxRigidStatic> ground_plane(PxCreatePlane(*physics,
-        PxPlane(0, 1, 0, 0), *material_));
+        PxPlane(0, 0, 1, 0), *material_));
     if (ground_plane.get() == NULL) {
         return false;
     }
@@ -163,39 +163,39 @@ bool TestScene::initScene2()
 
     {
         PxShape *s = env->createShape(
-            PxBoxGeometry(20.0f, 1.0f, 1.0f), *material_);
+            PxBoxGeometry(2000.0f, 100.0f, 100.0f), *material_);
         if (NULL == s) {
             return false;
         }
-        s->setLocalPose(PxTransform(PxVec3(0.0f, 1.0f, 20.0f)));
+        s->setLocalPose(PxTransform(PxVec3(0.0f, 2000.0f, 100.0f)));
     }
     {
         PxShape *s = env->createShape(
-            PxBoxGeometry(20.0f, 1.0f, 1.0f), *material_);
+            PxBoxGeometry(2000.0f, 100.0f, 100.0f), *material_);
         if (NULL == s) {
             return false;
         }
-        s->setLocalPose(PxTransform(PxVec3(0.0f, 1.0f, -20.0f)));
+        s->setLocalPose(PxTransform(PxVec3(0.0f, -2000.0f, 100.0f)));
     }
     {
         PxShape *s = env->createShape(
-            PxBoxGeometry(1.0f, 1.0f, 20.0f), *material_);
+            PxBoxGeometry(100.0f, 2000.0f, 100.0f), *material_);
         if (NULL == s) {
             return false;
         }
-        s->setLocalPose(PxTransform(PxVec3(20.0f, 1.0f, 0.0f)));
+        s->setLocalPose(PxTransform(PxVec3(2000.0f, 0.0f, 100.0f)));
     }
     {
         PxShape *s = env->createShape(
-            PxBoxGeometry(1.0f, 1.0f, 20.0f), *material_);
+            PxBoxGeometry(100.0f, 2000.0f, 100.0f), *material_);
         if (NULL == s) {
             return false;
         }
-        s->setLocalPose(PxTransform(PxVec3(-20.0f, 1.0f, 0.0f)));
+        s->setLocalPose(PxTransform(PxVec3(-2000.0f, 0.0f, 100.0f)));
     }
     {
         PxShape *s = env->createShape(
-            PxBoxGeometry(5.0f, 0.5f, 20.0f), *material_);
+            PxBoxGeometry(500.0f, 2000.0f, 50.0f), *material_);
         if (NULL == s) {
             return false;
         }
@@ -207,12 +207,13 @@ bool TestScene::initScene2()
 
     {
         PxCapsuleControllerDesc desc;
-        desc.radius = 1.0f;
-        desc.height = 1.0f;
+        desc.radius = 100.0f;
+        desc.height = 100.0f;
         desc.material = material_;
         desc.position = PxExtendedVec3(0.0f, 0.0f, 0.0f);
+        desc.upDirection = PxVec3(0.0f, 0.0f, 1.0f);
         desc.slopeLimit = 0.0f;
-        desc.contactOffset = 0.1f;
+        desc.contactOffset = 10.0f;
         PxController *controller =
             controller_manager_->createController(desc);
         if (NULL == controller) {
@@ -222,8 +223,8 @@ bool TestScene::initScene2()
 
     {
         PhysxPtr<PxRigidDynamic> sphere(PxCreateDynamic(*physics,
-            PxTransform(PxVec3(0.0f, 10.0f, 0.0f)),
-            PxSphereGeometry(1.0f), *material_, 10.0f));
+            PxTransform(PxVec3(0.0f, 0.0f, 1000.0f)),
+            PxSphereGeometry(100.0f), *material_, 1000.0f));
         if (sphere.get() == NULL) {
             return false;
         }

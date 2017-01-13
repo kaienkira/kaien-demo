@@ -39,9 +39,13 @@ bool PhysxSystem::init()
         &PxProfileZoneManager::createProfileZoneManager(foundation_);
 #endif
 
+    PxTolerancesScale scale;
+    scale.length = 100;
+    scale.speed = 1000;
+
     physics_ = PxCreateBasePhysics(
-        PX_PHYSICS_VERSION, *foundation_,
-        PxTolerancesScale(), true, profile_zone_manager_);
+        PX_PHYSICS_VERSION, *foundation_, scale,
+        true, profile_zone_manager_);
     if (NULL == physics_) {
         return false;
     }
