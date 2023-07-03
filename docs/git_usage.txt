@@ -1,0 +1,140 @@
+*. 分支介绍
+    main -> 主分支
+    feature/<feature_name> -> 功能分支(例如:feature/mail_dev)
+    bugfix/<bugfix_name> -> 修复BUG分支(例如:bugfix/mail_bug_10001)
+
+*. 修改.gitconfig
+    命令行:
+        vim ~/.gitconfig
+            [user]
+            name = <your_name> 
+            email = <your_email>
+            [alias]
+            st = status
+            di = diff
+            ci = commit
+            co = checkout
+            br = branch
+            [core]
+            autocrlf = false
+            editor = vim
+            excludesfile = ~/.gitignore
+            safecrlf = true
+            [pull]
+            rebase = true
+            [push]
+            default = simple
+    Fork:
+        (File->Preferences->Git->Global User Information)
+            User name: <your_name>
+            Email: <your_email>
+        (Repository->Open In Console)
+            git config --global core.autocrlf false
+            git config --global core.safecrlf true
+            git config --global pull.rebase true
+            git config --global push.default simple
+
+*. 创建开发分支
+    命令行:
+        # 更新本地库 
+        git fetch -p
+        # 切换到主分支
+        git checkout main
+        # 更新到最新
+        git pull --rebase
+        # 创建并切换到功能分支
+        git checkout -b feature/game_func_1
+
+    Fork:
+        # 切换到主分支
+        右键Branches/main分支->Checkout 'main'
+        # 更新到最新
+        右键Branches/main分支->Pull 'origin/main' ...
+            勾选Rebase instead of merge
+            点击Pull
+        # 创建并切换到功能分支
+        右键Branches/main分支->New Branch ...
+            Branch name: feature/game_func_1
+            勾选Check out after create
+            点击Create and Checkout
+
+*. 如果是多人合作的开发分支需要把新创建的分支上传到服务器上
+    命令行:
+        git push -u origin feature/game_func_1
+
+    Fork:
+        右键Branches/feature/game_func_1分支->Push 'feature/game_func_1' to 'origin'
+            勾选Create tracking reference
+            点击Push
+
+*. 其他配合开发的人员需要checkout对应的开发分支
+    命令行:
+        # 更新本地库 
+        git fetch -p
+        # 签出开发分支
+        git checkout feature/game_func_1
+        # 更新到最新
+        git pull --rebase
+
+    Fork:
+        点击Fetch->点击Fetch
+        右键Remotes/origin/feature/game_func_1->Checkout 'origin/feature/game_func_1'
+        
+
+*. 本地功能开发并提交到开发分支
+    注: 开发分支上可以频繁多次提交
+    命令行:
+        # 把修改后的文件加入暂存区
+        git add <修改的文件>
+        # 提交到开发分支
+        git commit -m "提交日志"
+        # push到服务器
+        git push
+
+*. 开发分支同步main上面的修改
+    命令行:
+        # 更新本地库 
+        git fetch -p
+        # 更新到最新
+        git pull --rebase
+        # rebase到main分支并解决冲突
+        git rebase main
+        # 修改冲突文件
+        vi <冲突文件>
+        git add <冲突文件>
+        # 继续rebase
+        git rebase --continue
+        # 终止rebase
+        git rebase --abort
+        # rebase后的分支提交到服务器
+        git push -f
+
+*. 把开发分支合并到main
+    命令行:
+        # 更新本地库 
+        git fetch -p
+        # 切换到开发分支
+        git checkout feature/game_func_1
+        # 更新到最新
+        git pull --rebase
+        # rebase到main分支并解决冲突
+        git rebase main
+        # rebase后的分支提交到服务器
+        git push -f
+        # 切换到主分支
+        git checkout main
+        # 更新到最新
+        git pull --rebase
+        # 合并开发分支
+        git merge --squash feature/game_func_1
+        # 提交到主干
+        git commit -m "提交日志"
+        # push到服务器
+        git push
+
+*. 删除开发分支
+    命令行:
+        # 删除本地开发分支
+        git branch -d feature/game_func_1
+        # 删除服务器开发分支
+        git push origin --delete feature/game_func_1
