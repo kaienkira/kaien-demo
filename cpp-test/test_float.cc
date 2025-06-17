@@ -3,9 +3,37 @@
 #include <format>
 #include <iostream>
 #include <limits>
+#include <string>
 #include <type_traits>
 
-int main(void)
+template <std::floating_point T>
+void printFloatInfo(const std::string &type_name)
+{
+    std::cout << "+++++ " << type_name << " +++++"
+        << std::endl;
+    std::cout << std::format("is_float_point: {:s}",
+        std::is_floating_point_v<T>)
+        << std::endl;
+    std::cout << std::format("is_iec559: {:s}",
+        std::numeric_limits<T>::is_iec559)
+        << std::endl;
+    std::cout << std::format("has_infinity: {:s}",
+        std::numeric_limits<T>::has_infinity)
+        << std::endl;
+    std::cout << std::format("has_quiet_NaN: {:s}",
+        std::numeric_limits<T>::has_quiet_NaN)
+        << std::endl;
+    std::cout << std::format("has_signaling_NaN: {:s}",
+        std::numeric_limits<T>::has_signaling_NaN)
+        << std::endl;
+    std::cout << std::format("digits: {} digits10: {} max_digits10: {}",
+        std::numeric_limits<T>::digits,
+        std::numeric_limits<T>::digits10,
+        std::numeric_limits<T>::max_digits10)
+        << std::endl;
+}
+
+void printFloatBit()
 {
     float inf =
         std::numeric_limits<float>::infinity();
@@ -21,19 +49,6 @@ int main(void)
     float qnan0 = std::nanf("0");
     float qnan1 = std::nanf("1");
     float qnan2 = std::nanf("2");
-
-    std::cout << std::format("is_float_point: {:s}",
-        std::is_floating_point_v<float>)
-        << std::endl;
-    std::cout << std::format("is_iec559: {:s}",
-        std::numeric_limits<float>::is_iec559)
-        << std::endl;
-    std::cout << std::format("has_quiet_NaN: {:s}",
-        std::numeric_limits<float>::has_quiet_NaN)
-        << std::endl;
-    std::cout << std::format("has_signaling_NaN: {:s}",
-        std::numeric_limits<float>::has_signaling_NaN)
-        << std::endl;
 
     std::cout << std::format("{:10} {:032b}",
         inf,
@@ -79,6 +94,15 @@ int main(void)
         qnan2,
         *reinterpret_cast<uint32_t *>(&qnan2))
         << std::endl;
+
+}
+
+int main(void)
+{
+    printFloatBit();
+    printFloatInfo<float>("float");
+    printFloatInfo<double>("double");
+    printFloatInfo<long double>("long double");
 
     return 0;
 }
