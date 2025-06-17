@@ -44,15 +44,18 @@ void printFloatInfo(const std::string &type_name)
     std::cout << std::format("lowest: {}",
         std::numeric_limits<T>::lowest())
         << std::endl;
+    std::cout << std::format("denorm_min: {}",
+        std::numeric_limits<T>::denorm_min())
+        << std::endl;
 }
 
 void printFloatBit()
 {
     float min = std::numeric_limits<float>::min();
-    float lowest = std::numeric_limits<float>::lowest();
     float max = std::numeric_limits<float>::max();
-    float inf =
-        std::numeric_limits<float>::infinity();
+    float lowest = std::numeric_limits<float>::lowest();
+    float denorm_min = std::numeric_limits<float>::denorm_min();
+    float inf = std::numeric_limits<float>::infinity();
     float negative_inf = -inf;
     float zero = +0.0;
     float negative_zero = -0.0;
@@ -66,7 +69,7 @@ void printFloatBit()
     float qnan1 = std::nanf("1");
     float qnan2 = std::nanf("2");
 
-    constexpr int col_1_width = 7;
+    constexpr int col_1_width = 10;
 
     std::cout << std::format("{:>{}} {:032b} {}",
         "min", col_1_width,
@@ -82,6 +85,11 @@ void printFloatBit()
         "lowest", col_1_width,
         *reinterpret_cast<uint32_t *>(&lowest),
         lowest)
+        << std::endl;
+    std::cout << std::format("{:>{}} {:032b} {}",
+        "denorm_min", col_1_width,
+        *reinterpret_cast<uint32_t *>(&denorm_min),
+        denorm_min)
         << std::endl;
     std::cout << std::format("{:{}} {:032b}",
         inf, col_1_width,
