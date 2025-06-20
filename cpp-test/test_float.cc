@@ -38,6 +38,18 @@ void printFloatInfo(const std::string &type_name)
     std::cout << std::format("max_digits10: {}",
         std::numeric_limits<T>::max_digits10)
         << std::endl;
+    std::cout << std::format("min_exponent: {}",
+        std::numeric_limits<T>::min_exponent)
+        << std::endl;
+    std::cout << std::format("min_exponent10: {}",
+        std::numeric_limits<T>::min_exponent10)
+        << std::endl;
+    std::cout << std::format("max_exponent: {}",
+        std::numeric_limits<T>::max_exponent)
+        << std::endl;
+    std::cout << std::format("max_exponent10: {}",
+        std::numeric_limits<T>::max_exponent10)
+        << std::endl;
     std::cout << std::format("min: {}",
         std::numeric_limits<T>::min())
         << std::endl;
