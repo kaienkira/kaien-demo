@@ -26,6 +26,9 @@ void printFloatInfo(const std::string &type_name)
     std::cout << std::format("has_signaling_NaN: {:s}",
         std::numeric_limits<T>::has_signaling_NaN)
         << std::endl;
+    std::cout << std::format("radix: {}",
+        std::numeric_limits<T>::radix)
+        << std::endl;
     std::cout << std::format("digits: {}",
         std::numeric_limits<T>::digits)
         << std::endl;
