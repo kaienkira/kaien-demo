@@ -10,13 +10,14 @@ test_multidimensional_subscript_operator \
 test_static_lambda \
 test_std_is_base_of \
 test_std_conditional \
+test_structured_bindings \
 test_three_way_comparison \
 test_type_traits
 
 CC = g++
 CPP_FLAGS = -g -Wall -std=c++23
 
-default: test_three_way_comparison
+default: test_structured_bindings
 
 clean:
 	rm -rf ./bin
@@ -62,6 +63,11 @@ test_std_is_base_of:
 	./bin/$@
 
 test_std_conditional:
+	mkdir -p bin/
+	$(CC) $(CPP_FLAGS) $@.cc -o bin/$@
+	./bin/$@
+
+test_structured_bindings:
 	mkdir -p bin/
 	$(CC) $(CPP_FLAGS) $@.cc -o bin/$@
 	./bin/$@
