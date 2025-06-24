@@ -26,9 +26,18 @@ public:
     {
     }
 
-    int &getA() { return a_; }
-    float &getB() { return b_; }
-    int &getC() { return c_; }
+    
+    template <size_t I>
+    auto &get()
+    {
+        if constexpr (I == 0) {
+            return a_;
+        } else if constexpr (I == 1) {
+            return b_;
+        } else if constexpr (I == 2) {
+            return c_;
+        }
+    }
 
 private:
     int a_;
@@ -36,36 +45,24 @@ private:
     int c_;
 };
 
-template<>
+template <>
 struct std::tuple_size<B> : std::integral_constant<size_t, 3> {
 };
 
-template<>
+template <>
 struct std::tuple_element<0, B> {
     using type = int;
 };
 
-template<>
+template <>
 struct std::tuple_element<1, B> {
     using type = float;
 };
 
-template<>
+template <>
 struct std::tuple_element<2, B> {
     using type = int;
 };
-
-template<size_t I>
-auto &get(B& o);
-
-template<>
-auto &get<0>(B &o) { return o.getA(); }
-
-template<>
-auto &get<1>(B &o) { return o.getB(); }
-
-template<>
-auto &get<2>(B &o) { return o.getC(); }
 
 int main(void)
 {
