@@ -6,6 +6,7 @@ test_concept \
 test_deducing_this \
 test_float \
 test_float_exception \
+test_initializer_lists \
 test_multidimensional_subscript_operator \
 test_static_lambda \
 test_std_is_base_of \
@@ -17,7 +18,7 @@ test_type_traits
 CC = g++
 CPP_FLAGS = -g -Wall -std=c++23
 
-default: test_structured_bindings
+default: test_initializer_lists
 
 clean:
 	rm -rf ./bin
@@ -43,6 +44,11 @@ test_float:
 	./bin/$@
 
 test_float_exception:
+	mkdir -p bin/
+	$(CC) $(CPP_FLAGS) $@.cc -o bin/$@
+	./bin/$@
+
+test_initializer_lists:
 	mkdir -p bin/
 	$(CC) $(CPP_FLAGS) $@.cc -o bin/$@
 	./bin/$@
