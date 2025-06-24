@@ -46,23 +46,13 @@ private:
 };
 
 template <>
-struct std::tuple_size<B> : std::integral_constant<size_t, 3> {
-};
-
+struct std::tuple_size<B> : std::integral_constant<size_t, 3> {};
 template <>
-struct std::tuple_element<0, B> {
-    using type = int;
-};
-
+struct std::tuple_element<0, B> { using type = int; };
 template <>
-struct std::tuple_element<1, B> {
-    using type = float;
-};
-
+struct std::tuple_element<1, B> { using type = float; };
 template <>
-struct std::tuple_element<2, B> {
-    using type = int;
-};
+struct std::tuple_element<2, B> { using type = int; };
 
 int main(void)
 {
