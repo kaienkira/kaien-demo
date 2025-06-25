@@ -13,12 +13,13 @@ test_std_is_base_of \
 test_std_conditional \
 test_structured_bindings \
 test_three_way_comparison \
-test_type_traits
+test_type_traits \
+test_utility
 
 CC = g++
 CPP_FLAGS = -g -Wall -std=c++23
 
-default: test_initializer_lists
+default: test_utility
 
 clean:
 	rm -rf ./bin
@@ -84,6 +85,11 @@ test_three_way_comparison:
 	./bin/$@
 
 test_type_traits:
+	mkdir -p bin/
+	$(CC) $(CPP_FLAGS) $@.cc -o bin/$@
+	./bin/$@
+
+test_utility:
 	mkdir -p bin/
 	$(CC) $(CPP_FLAGS) $@.cc -o bin/$@
 	./bin/$@
