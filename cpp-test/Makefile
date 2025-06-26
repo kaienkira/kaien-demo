@@ -1,6 +1,7 @@
 .PHONY: \
 default \
 clean \
+test_algorithm \
 test_cmath \
 test_concept \
 test_deducing_this \
@@ -19,10 +20,15 @@ test_utility
 CC = g++
 CPP_FLAGS = -g -Wall -std=c++23
 
-default: test_utility
+default: test_algorithm
 
 clean:
 	rm -rf ./bin
+
+test_algorithm:
+	mkdir -p bin/
+	$(CC) $(CPP_FLAGS) $@.cc -o bin/$@
+	./bin/$@
 
 test_cmath:
 	mkdir -p bin/
