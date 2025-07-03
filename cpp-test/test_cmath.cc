@@ -13,5 +13,7 @@ int main(void)
     std::cout << std::format("pi = {}", std::numbers::pi_v<double>) << std::endl;
     std::cout << std::format("pi = {}", std::numbers::pi_v<long double>) << std::endl;
 
+    std::cout << std::format("tgamma(0.5) = {}", std::tgamma(0.5L)) << std::endl;
+
     return 0;
 }

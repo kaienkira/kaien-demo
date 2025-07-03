@@ -20,7 +20,7 @@ test_utility
 CC = g++
 CPP_FLAGS = -g -Wall -std=c++23
 
-default: test_algorithm
+default: test_cmath
 
 clean:
 	rm -rf ./bin
