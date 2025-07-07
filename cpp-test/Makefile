@@ -9,6 +9,7 @@ test_float \
 test_float_exception \
 test_initializer_lists \
 test_multidimensional_subscript_operator \
+test_random \
 test_static_lambda \
 test_std_is_base_of \
 test_std_conditional \
@@ -20,7 +21,7 @@ test_utility
 CC = g++
 CPP_FLAGS = -g -Wall -std=c++23
 
-default: test_cmath
+default: test_random
 
 clean:
 	rm -rf ./bin
@@ -61,6 +62,11 @@ test_initializer_lists:
 	./bin/$@
 
 test_multidimensional_subscript_operator:
+	mkdir -p bin/
+	$(CC) $(CPP_FLAGS) $@.cc -o bin/$@
+	./bin/$@
+
+test_random:
 	mkdir -p bin/
 	$(CC) $(CPP_FLAGS) $@.cc -o bin/$@
 	./bin/$@
