@@ -1,9 +1,9 @@
 #ifndef KAIEN_DEMO_OPENGL_HELLO_WORLD_H
 #define KAIEN_DEMO_OPENGL_HELLO_WORLD_H
 
+#include <glad/gl.h>
 #include <string>
 #include <vector>
-#include <GL/glew.h>
 
 class VertexArray {
 public:

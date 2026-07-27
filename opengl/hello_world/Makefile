@@ -2,6 +2,10 @@ src =\
 main.cc \
 shader_program.cc \
 vertex_array.cc \
+../glad/src/gl.c
 
 debug:
-	g++ -DGLEW_STATIC -g -std=c++14 $(src) -o hello_world -lglfw3 -lglew32 -lopengl32 -mwindows -static
+	@g++ -g -std=c++20 -I../glad/include/ $(src) -o hello_world `pkgconf --libs glfw3`
+
+clean:
+	@rm -f hello_world

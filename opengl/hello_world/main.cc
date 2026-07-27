@@ -1,11 +1,8 @@
 #include <cstddef>
-#include <fstream>
 #include <iostream>
-#include <sstream>
 #include <string>
-#include <vector>
 
-#include <GL/glew.h>
+#include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
 #include "shader_program.h"
@@ -56,19 +53,16 @@ int main()
     GLFWwindow* window = glfwCreateWindow(
         800, 600, "Hello World", NULL, NULL);
     if (NULL == window) {
-        std::cout << "create GLFW window failed" << std::endl;
+        std::cerr << "create GLFW window failed" << std::endl;
         return 1;
     }
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, keyCallback);
 
-    // init glew
-    glewExperimental = GL_TRUE;
-    GLenum ret = glewInit();
-    if (ret != GLEW_OK) {
-        std::cout << "int GLEW failed: "
-                  << glewGetErrorString(ret)
-                  << std::endl;
+    // init glad
+    int glVersion = gladLoadGL(glfwGetProcAddress);
+    if (glVersion == 0) {
+        std::cerr << "int glad failed" << std::endl;
         return 1;
     }
 
@@ -81,14 +75,14 @@ int main()
     ShaderProgram shader_program;
     if (shader_program.init(
             "vertex.shader", "fragment.shader") == false) {
-        std::cout << "load shader program failed" << std::endl;
+        std::cerr << "load shader program failed" << std::endl;
         return 1;
     }
 
     // build vertex array
     VertexArray vertex_array;
     if (vertex_array.init("trangle.model") == false) {
-        std::cout << "load model failed" << std::endl;
+        std::cerr << "load model failed" << std::endl;
         return 1;
     }
 

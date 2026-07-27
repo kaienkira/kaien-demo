@@ -1,8 +1,8 @@
 #ifndef KAIEN_DEMO_HELLO_WORLD_SHADER_PROGRAM_H
 #define KAIEN_DEMO_HELLO_WORLD_SHADER_PROGRAM_H
 
+#include <glad/gl.h>
 #include <string>
-#include <GL/glew.h>
 
 class ShaderProgram {
 public:

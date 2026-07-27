@@ -49,9 +49,9 @@ bool VertexArray::init(const std::string &model_file)
     std::vector<GLfloat> vertices;
     std::vector<GLuint> indices;
 
-    std::ifstream fs("trangle.model");
+    std::ifstream fs(model_file);
     if (fs.is_open() == false) {
-        std::cout << "can not open model file" << std::endl;
+        std::cerr << "can not open model file" << std::endl;
         return 0;
     }
 
